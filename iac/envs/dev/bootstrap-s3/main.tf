@@ -2,7 +2,7 @@
 locals  {
     common_tags = {
         Environment = var.environment
-        Service     = "cicd"
+        Service     = "boostrap-s3"
         Owner       = var.owner
         CostCenter  = var.cost_center
         Compliance  = var.compliance
