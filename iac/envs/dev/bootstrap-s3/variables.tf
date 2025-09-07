@@ -30,6 +30,7 @@ variable cost_center {
 }
 
 variable bucket_name {
+  # devopskit-dev-tfstate-1234
   type        = string
   description = "Globally-unique S3 bucket name for Terraform state (e.g., devopskit-dev-tfstate-1234)"
 }
