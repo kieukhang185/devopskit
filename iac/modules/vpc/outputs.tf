@@ -33,3 +33,18 @@ output "data_subnet_ids" {
   value       = [for idx in sort(keys(aws_subnet.data)) : aws_subnet.data[idx].id]
   description = "IDs of the data subnets"
 }
+
+output "internet_gateway_id" {
+  value       = aws_internet_gateway.igw.id
+  description = "ID of the Internet Gateway"
+}
+
+output "public_route_table_id" {
+  value       = aws_route_table.public.id
+  description = "ID of the public route table"
+}
+
+output "public_route_table_association_ids" {
+  value       = [for k, v in aws_route_table_association.public : v.id]
+  description = "IDs of the public route table associations"
+}
