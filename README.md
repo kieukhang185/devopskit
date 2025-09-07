@@ -15,7 +15,7 @@ This repository acts as a blueprint for real-world enterprise DevOps setups.
 
 ## 🏗️ Architecture
 - **Networking**: VPC per env, 2–3 AZs, public/private/data subnets.
-- **Compute**: 
+- **Compute**:
   - `web`: Nginx reverse proxy/static
   - `api`: App runtime (Node/Go/Python)
   - `db`: PostgreSQL/MySQL on EC2
@@ -75,7 +75,7 @@ This will create VPC, subnets, IAM roles, EC2 instances, ALB, monitoring stack, 
 ---
 
 ## 🤝 Contributing
-See [CONTRIBUTING.md](CONTRIBUTING.md).  
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 All resources must be tagged per [tagging policy](docs/tagging-policy.md).
 
 ---

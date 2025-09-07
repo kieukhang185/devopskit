@@ -1,13 +1,13 @@
 # Onboarding Guide for Contributors
 
-Welcome to the **DevOpsKit** project! 🎉  
+Welcome to the **DevOpsKit** project! 🎉
 This guide will help new contributors quickly get started.
 
 ---
 
 ## 1. Overview
 
-DevOpsKit is a reference AWS DevOps project aligned with the **AWS DevOps Engineer – Professional** exam.  
+DevOpsKit is a reference AWS DevOps project aligned with the **AWS DevOps Engineer – Professional** exam.
 It provisions a **multi-environment platform (dev/stage/prod)** using Terraform, with built-in CI/CD, monitoring, security, and DR.
 
 ---

@@ -1,0 +1,11 @@
+# This is a custom yamllint configuration file
+extends: default
+rules:
+  # Disable the comments-indentation rule
+  comments-indentation: disable
+  # Adjust the line-length rule
+  line-length:
+    max: 100
+    level: warning # Treat lines longer than 100 characters as warnings, not errors
+  # Enable a rule that is disabled by default (if applicable)
+  empty-values: enable
