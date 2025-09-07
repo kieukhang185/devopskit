@@ -1,3 +1,4 @@
+# Create VPC and subnets for dev environment
 module "vpc" {
   source = "../../modules/vpc"
 

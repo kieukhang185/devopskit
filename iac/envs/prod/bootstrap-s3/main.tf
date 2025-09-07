@@ -1,4 +1,4 @@
-
+# Bootstrap S3 bucket for Terraform state
 locals  {
     common_tags = {
         Environment = var.environment

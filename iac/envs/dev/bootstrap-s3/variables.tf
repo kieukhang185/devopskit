@@ -1,4 +1,4 @@
-
+# Bootstrap variables for S3 bucket
 variable project {
   type        = string
   default     = "vtd-devops-khangkieu"

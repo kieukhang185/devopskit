@@ -1,4 +1,4 @@
-
+## Bootstrap S3 bucket for Terraform state
 variable project {
   type        = string
   default     = "vtd-devops-khangkieu"

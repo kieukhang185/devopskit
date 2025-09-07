@@ -1,3 +1,4 @@
+# VPC Module Outputs
 output "vpc_id" {
   value       = aws_vpc.devopskit_vpc.id
   description = "ID of the VPC"

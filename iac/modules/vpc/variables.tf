@@ -1,3 +1,4 @@
+# VPC Module Variables
 variable "name_prefix" {
   description = "Prefix for naming (e.g., dev, stage, prod)"
   type        = string
