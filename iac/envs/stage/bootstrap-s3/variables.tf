@@ -7,7 +7,7 @@ variable project {
 
 variable environment {
   type        = string
-  default     = "dev"
+  default     = "stage"
   description = "Environment name for tagging and naming resources"
 }
 
