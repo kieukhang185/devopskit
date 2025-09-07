@@ -1,3 +1,4 @@
+# Backend configuration for Terraform state
 terraform {
   backend "s3" {
     bucket         = "devopskit-dev-tfstate-1234" # REPLACE with your unique bucket name from E1-S3

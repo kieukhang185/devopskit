@@ -1,3 +1,4 @@
+# Bootstrap variables for DynamoDB table
 variable "project" {
   description = "Project name for tagging"
   type        = string

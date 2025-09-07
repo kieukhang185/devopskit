@@ -1,3 +1,4 @@
+# DynamoDB table for Terraform state locking
 variable "project" {
   description = "Project name for tagging"
   type        = string

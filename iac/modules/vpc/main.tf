@@ -1,3 +1,4 @@
+# VPC Module
 locals {
   base_tags = {
     Name        = "${var.name_prefix}-vpc"
