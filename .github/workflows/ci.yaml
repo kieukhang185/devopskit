@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  pre-commit:
+    name: Run pre-commit checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install pre-commit
+        run: pip install -r requirements-dev.txt
+
+      - name: Cache pre-commit env
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: ${{ runner.os }}-precommit-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-precommit-
+
+      - name: Run pre-commit on all files
+        run: pre-commit run --all-files
+
+  note:
+    name: Note (CI/CD handled by CodePipeline)
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Primary CI/CD is on AWS CodePipeline; this workflow just runs basic hygiene checks."
