@@ -25,7 +25,7 @@ Before contributing, ensure you have:
   - Docker (optional, for builds/tests)
 - Clone the repository:
   ```bash
-  git clone https://github.com/<your-org>/devopskit.git
+  git clone https://github.com/kieukhang185/devopskit.git
   cd devopskit
   ```
 
@@ -70,8 +70,7 @@ Before contributing, ensure you have:
 
 ## 6. Support
 
-- Tag `@devops-team-leads` in PRs for reviews.
-- Use project Slack channel (`#devopskit`) for questions.
+- Tag `@kieukhang185` in PRs for reviews.
 - Report issues via GitHub Issues.
 
 ---

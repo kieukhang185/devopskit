@@ -70,8 +70,7 @@ This will create VPC, subnets, IAM roles, EC2 instances, ALB, monitoring stack, 
 ## 📚 Documentation
 - [Architecture Diagram](docs/diagrams/)
 - [Runbooks](docs/runbooks/)
-- [Onboarding Guide](docs/onboarding.md)
-- [ADR Records](docs/adr/)
+- [Onboarding Guide](docs/onboarding-guide.md)
 
 ---
 

@@ -1,6 +1,6 @@
 # Tagging Policy
 
-All AWS resources in the DevOpsKit project must be tagged consistently.  
+All AWS resources in the DevOpsKit project must be tagged consistently.
 This ensures visibility, cost tracking, compliance, and automation.
 
 ---
