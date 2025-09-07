@@ -1,8 +1,7 @@
 # DevOpsKit – AWS Multi-Environment Platform
 
 ## 📌 Overview
-DevOpsKit is a reference AWS DevOps project aligned with the **AWS DevOps Engineer – Professional** exam.  
-It provisions a **multi-environment (dev/stage/prod) platform** on AWS using **Terraform-first infrastructure**, with:
+DevOpsKit is a reference AWS DevOps project. It provisions a **multi-environment (dev/stage/prod) platform** on AWS using **Terraform-first infrastructure**, with:
 
 - Immutable compute (EC2 for web, api, db, monitoring, ci/bastion).
 - CI/CD (AWS CodePipeline/CodeBuild/CodeDeploy).
@@ -39,7 +38,7 @@ This repository acts as a blueprint for real-world enterprise DevOps setups.
 
 ### 2. Clone Repository
 ```bash
-git clone https://github.com/<your-org>/devopskit.git
+git clone https://github.com/kieukhang185/devopskit.git
 cd devopskit
 ```
 
@@ -83,9 +82,9 @@ All resources must be tagged per [tagging policy](docs/tagging-policy.md).
 ---
 
 ## 📌 Status
-- [x] Infra Foundation
-- [x] Compute & ALB
-- [x] CI/CD Pipeline
+- [ ] Infra Foundation
+- [ ] Compute & ALB
+- [ ] CI/CD Pipeline
 - [ ] Observability (in progress)
 - [ ] Security & DR
 
