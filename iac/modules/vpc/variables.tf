@@ -62,3 +62,24 @@ variable "extra_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "public_subnet_cidrs" {
+  description = "List of 2 CIDRs for public subnets (AZ0, AZ1)"
+  type        = list(string)
+}
+
+variable "private_subnet_cidrs" {
+  description = "List of 2 CIDRs for private subnets (AZ0, AZ1)"
+  type        = list(string)
+}
+
+variable "data_subnet_cidrs" {
+  description = "List of 2 CIDRs for data subnets (AZ0, AZ1)"
+  type        = list(string)
+}
+
+variable "az_count" {
+  description = "Number of AZs to use (fixed at 2 for now)"
+  type        = number
+  default     = 2
+}
