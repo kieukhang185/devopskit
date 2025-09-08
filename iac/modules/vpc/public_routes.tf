@@ -1,7 +1,7 @@
 # Create a public route table
 # Single public route table for all public subnets
 resource "aws_route_table" "public" {
-    vpc_id = aws_vpc.devopskit_vpc.id
+    vpc_id = aws_vpc.this.id
 
     tags = merge({
         Name = "${var.name_prefix}-public-rt"

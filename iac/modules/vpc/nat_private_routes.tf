@@ -39,7 +39,7 @@ resource "aws_nat_gateway" "nat" {
 # Private route tables (one per AZ)
 resource "aws_route_table" "private" {
     for_each = aws_nat_gateway.private
-    vpc_id = aws_vpc.devopskit_vpc.id
+    vpc_id = aws_vpc.this.id
     tags = merge({
         Name = "${var.name_prefix}-private-rt-${each.key}"
         Project     = var.project

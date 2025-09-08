@@ -1,52 +1,52 @@
 # VPC Module Outputs
 output "vpc_id" {
-  value       = aws_vpc.devopskit_vpc.id
   description = "ID of the VPC"
+  value       = aws_vpc.this.id
 }
 
 output "vpc_arn" {
-  value       = aws_vpc.devopskit_vpc.arn
   description = "ARN of the VPC"
+  value       = aws_vpc.this.arn
 }
 
 output "vpc_cidr_block" {
-  value       = aws_vpc.devopskit_vpc.cidr_block
   description = "CIDR block of the VPC"
+  value       = aws_vpc.this.cidr_block
 }
 
 output "vpc_tags" {
-  value       = aws_vpc.devopskit_vpc.tags
   description = "Tags applied to the VPC"
+  value       = aws_vpc.this.tags
 }
 
 output "public_subnet_ids" {
-  value       = [for idx in sort(keys(aws_subnet.public)) : aws_subnet.public[idx].id]
   description = "IDs of the public subnets"
+  value       = [for idx in sort(keys(aws_subnet.public)) : aws_subnet.public[idx].id]
 }
 
 output "private_subnet_ids" {
-  value       = [for idx in sort(keys(aws_subnet.private)) : aws_subnet.private[idx].id]
   description = "IDs of the private subnets"
+  value       = [for idx in sort(keys(aws_subnet.private)) : aws_subnet.private[idx].id]
 }
 
 output "data_subnet_ids" {
-  value       = [for idx in sort(keys(aws_subnet.data)) : aws_subnet.data[idx].id]
   description = "IDs of the data subnets"
+  value       = [for idx in sort(keys(aws_subnet.data)) : aws_subnet.data[idx].id]
 }
 
 output "internet_gateway_id" {
-  value       = aws_internet_gateway.igw.id
   description = "ID of the Internet Gateway"
+  value       = aws_internet_gateway.igw.id
 }
 
 output "public_route_table_id" {
-  value       = aws_route_table.public.id
   description = "ID of the public route table"
+  value       = aws_route_table.public.id
 }
 
 output "public_route_table_association_ids" {
-  value       = [for k, v in aws_route_table_association.public : v.id]
   description = "IDs of the public route table associations"
+  value       = [for k, v in aws_route_table_association.public : v.id]
 }
 
 output "nat_gateway_ids" {
@@ -72,4 +72,19 @@ output "private_rt_association_ids" {
 output "data_rt_association_ids" {
   description = "Associations of data subnets → private RT per AZ"
   value       = [for k, a in aws_route_table_association.data_assoc : a.id]
+}
+
+output "vpc_endpoint_s3_id" {
+  description = "ID of the S3 Gateway VPC Endpoint"
+  value       = aws_vpc_endpoint.s3.id
+}
+
+output "vpc_endpoint_ssm_ids" {
+  description = "IDs of the SSM Interface VPC Endpoints"
+  value       = { for k, vpce in aws_vpc_endpoint.ssm : k => vpce.id }
+}
+
+output "vpc_endpoint_sg_id" {
+  description = "ID of the security group for VPC endpoints"
+  value       = aws_security_group.endpoints.id
 }
