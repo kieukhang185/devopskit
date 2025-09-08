@@ -18,7 +18,7 @@ resource "aws_eip" "nat" {
 }
 
 # NAT Gateways in public subnets
-resource "aws_nat_gateway" "nat" {
+resource "aws_nat_gateway" "this" {
     for_each = aws_subnet.public
     allocation_id = aws_eip.nat[each.key].id
     subnet_id     = each.value.id
@@ -38,7 +38,7 @@ resource "aws_nat_gateway" "nat" {
 
 # Private route tables (one per AZ)
 resource "aws_route_table" "private" {
-    for_each = aws_nat_gateway.private
+    for_each = aws_nat_gateway.this
     vpc_id = aws_vpc.this.id
     tags = merge({
         Name = "${var.name_prefix}-private-rt-${each.key}"
@@ -58,11 +58,11 @@ resource "aws_route" "private_default" {
     for_each = aws_route_table.private
     route_table_id         = each.value.id
     destination_cidr_block = "0.0.0.0/0"
-    nat_gateway_id         = aws_nat_gateway.nat[each.key].id
+    nat_gateway_id         = aws_nat_gateway.this[each.key].id
 }
 
 # Associate private route tables with private subnets
-resource "aws_route_table_association" "private" {
+resource "aws_route_table_association" "private_assoc" {
     for_each = {
         for k, s in aws_subnet.private : k => {
         rt_id = aws_route_table.private[k].id
@@ -74,7 +74,7 @@ resource "aws_route_table_association" "private" {
 }
 
 # Associate private route tables with data subnets
-resource "aws_route_table_association" "data" {
+resource "aws_route_table_association" "data_assoc" {
     for_each = {
         for k, s in aws_subnet.data : k => {
         rt_id = aws_route_table.private[k].id

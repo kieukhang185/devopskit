@@ -34,6 +34,12 @@ variable "environment"  {
     type = string
 }
 
+variable "aws_region" {
+  type        = string
+  default     = "us-east-1"
+  description = "AWS region to deploy resources"
+}
+
 variable "owner" {
     description = "Owner tag"
     default = "kieukhang1805@gmail.com"

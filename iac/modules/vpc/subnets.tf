@@ -26,9 +26,9 @@ resource "aws_subnet" "public" {
         }
     }
 
-    vpc_id            = var.vpc_id
-    cidr_block       = each.value.cidr
-    availability_zone = each.value.az
+    vpc_id                  = aws_vpc.this.id
+    cidr_block              = each.value.cidr
+    availability_zone       = each.value.az
     map_public_ip_on_launch = true
 
     tags = merge(local.common_tags, {
@@ -47,7 +47,7 @@ resource "aws_subnet" "private" {
             idx = idx
         }
     }
-    vpc_id            = var.vpc_id
+    vpc_id            = aws_vpc.this.id
     cidr_block       = each.value.cidr
     availability_zone = each.value.az
     map_public_ip_on_launch = false
@@ -57,4 +57,25 @@ resource "aws_subnet" "private" {
         Tier = "Private"
         Service = "networking"
     })
+}
+
+# Data subnets
+resource "aws_subnet" "data" {
+    for_each = {
+        for idx, az in local.azs : idx => {
+            az = az
+            cidr = var.data_subnet_cidrs[idx]
+            idx = idx
+        }
+    }
+    vpc_id                  = aws_vpc.this.id
+    cidr_block              = each.value.cidr
+    availability_zone       = each.value.az
+    map_public_ip_on_launch = false
+
+    tags = merge(local.common_tags, {
+    Name    = "${var.name_prefix}-data-${each.value.idx}"
+    Tier    = "data"
+    Service = "networking"
+  })
 }

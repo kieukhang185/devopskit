@@ -32,13 +32,29 @@ resource "aws_security_group" "endpoints" {
   }, var.extra_tags)
 }
 
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id            = aws_vpc.this.id
+  service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = [for rt in aws_route_table.private : rt.id] # Associate with public route table
+
+  tags = merge({
+    Name        = "${var.name_prefix}-vpce-s3"
+    Project     = var.project
+    Environment = var.environment
+    Owner       = var.owner
+    CostCenter  = var.cost_center
+    Compliance  = var.compliance
+    Backup      = var.backup
+  }, var.extra_tags)
+}
+
 # Required for SSM: ssm, ssmmessages, ec2messages
 locals {
     ssm_services = toset(["ssm", "ssmmessages", "ec2messages"])
     # Place endpoints in both private and data subnets
     vpce_subnet_ids = concat(
-        [for k, s in aws_subnet.private : s.id],
-        [for k, s in aws_subnet.data    : s.id]
+        [for k, s in aws_subnet.private : s.id]
     )
 }
 

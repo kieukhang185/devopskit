@@ -15,7 +15,7 @@ This module creates a secure S3 bucket for storing Terraform state **for the dev
 cd repo/iac/envs/dev/bootstrap-s3
 cat > terraform.tfvars <<EOF
 bucket_name = "devopskit-dev-tfstate-<unique>"
-owner       = "khang.kieu@endava.com"
+owner       = "khangkieu1805@gmail.com"
 cost_center = "devops"
 EOF
 

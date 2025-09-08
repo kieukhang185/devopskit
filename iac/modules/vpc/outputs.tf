@@ -88,3 +88,13 @@ output "vpc_endpoint_sg_id" {
   description = "ID of the security group for VPC endpoints"
   value       = aws_security_group.endpoints.id
 }
+
+output "vpc_endpoint_secretsmanager_id" {
+  description = "ID of the Secrets Manager Interface VPC Endpoint"
+  value       = aws_vpc_endpoint.secretsmanager.id
+}
+
+output "vpc_endpoint_logs_id" {
+  description = "ID of the CloudWatch Logs Interface VPC Endpoint"
+  value       = aws_vpc_endpoint.logs.id
+}

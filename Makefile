@@ -6,11 +6,11 @@ IAC_DIR 	?= iac/envs/$(ENV)
 
 # Variables for boostrap backend per environment
 TF_STATE_BUCKET ?=  devopskit-$(ENV)-tfstate-123abc
-TF_LOCK_TABLE  ?=  devopskit-$(ENV)-tflock
+TF_LOCK_TABLE   ?=  devopskit-$(ENV)-tflock
 
 # Terraform options
 TF_IN_AUTOMATE 	?= -input=false -no-color
-TF_VAR_FLAGS 	?= -var=region=$(AWS_REGION)
+TF_VAR_FLAGS 	?= -var="aws_region=$(AWS_REGION)"
 
 # Utility
 SHELL := /usr/bin/bash
@@ -18,52 +18,58 @@ SHELL := /usr/bin/bash
 .SILENT: help
 
 # Backend boostrap target
-tf-backend-boostrap: _assert-bucket
-	# S3 bucket for Terraform state
-	cd $(IAC_DIR)/boostrap-s3
-	terraform ${TF_IN_AUTOMATE} init
-	terraform ${TF_IN_AUTOMATE} apply \
+tf-backend-bootstrap: _assert-bucket
+	@echo "S3 bucket for Terraform state"
+	cd $(IAC_DIR)/bootstrap-s3
+	terraform init ${TF_IN_AUTOMATE}
+	terraform apply ${TF_IN_AUTOMATE} \
 		-auto-approve \
 		$(TF_VAR_FLAGS) \
-		-var=bucket_name=$(TF_STATE_BUCKET) \
-		-var=environment=$(ENV)"
+		-var="bucket_name=$(TF_STATE_BUCKET)" \
+		-var="environment=$(ENV)"
 
-	# DynamoDB table for Terraform state locking
-	cd ../boostrap-dynamodb
-	terraform ${TF_IN_AUTOMATE} init
-	terraform ${TF_IN_AUTOMATE} apply \
+	@echo "DynamoDB table for Terraform state locking"
+	cd ../bootstrap-dynamodb
+	terraform init ${TF_IN_AUTOMATE}
+	terraform apply ${TF_IN_AUTOMATE} \
 		-auto-approve \
 		$(TF_VAR_FLAGS) \
-		-var=table_name=$(TF_LOCK_TABLE) \
-		-var=environment=$(ENV)
+		-var="table_name=$(TF_LOCK_TABLE)" \
+		-var="environment=$(ENV)"
 
-	@echo "Backend bootstrap complete for environment '$(ENV)'. Now you can run 'make tf-backend-init ENV=$(ENV)'' to initialize Terraform with the remote backend."
+	@echo "Backend bootstrap complete for environment '$(ENV)'. Now you can run 'make tf-backend-init ENV=$(ENV)' to initialize Terraform with the remote backend."
 
 # Initialize Terraform with remote backend required backend.tf
 tf-backend-init:
 	[[ -d $(IAC_DIR) ]] || (echo "Error: IAC directory '$(IAC_DIR)' does not exist"; exit 1)
-	cd $(IAC_DIR) && terraform ${TF_IN_AUTOMATE} init -migrate-state
+	cd $(IAC_DIR) && terraform init ${TF_IN_AUTOMATE} -migrate-state
 
 tf-fmt:
 	cd $(IAC_DIR) && terraform fmt -recursive
 
 tf-validate: tf-fmt
-	cd $(IAC_DIR) && terraform $(TF_IN_AUTOMATE) validate
+	cd $(IAC_DIR) && terraform validate
 
 tf-plan: tf-validate
-	cd $(IAC_DIR) && terraform $(TF_IN_AUTOMATE) plan $(TF_VAR_FLAGS)
+	cd $(IAC_DIR) && terraform plan $(TF_IN_AUTOMATE) $(TF_VAR_FLAGS)
 
 tf-apply:
-	cd $(IAC_DIR) && terraform $(TF_IN_AUTOMATE) apply -auto-approve $(TF_VAR_FLAGS)
+	cd $(IAC_DIR) && terraform apply $(TF_IN_AUTOMATE) -auto-approve $(TF_VAR_FLAGS)
 
 tf-up: tf-plan
-	cd $(IAC_DIR) && terraform $(TF_IN_AUTOMATE) apply -auto-approve $(TF_VAR_FLAGS)
+	cd $(IAC_DIR) && terraform apply $(TF_IN_AUTOMATE) -auto-approve $(TF_VAR_FLAGS)
 
 tf-destroy:
-	cd $(IAC_DIR) && terraform $(TF_IN_AUTOMATE) destroy -auto-approve $(TF_VAR_FLAGS)
+	cd $(IAC_DIR) && terraform destroy $(TF_IN_AUTOMATE) -auto-approve $(TF_VAR_FLAGS)
 
 tf-output:
-	cd $(IAC_DIR) && terraform $(TF_IN_AUTOMATE) output -json | jq .
+	cd $(IAC_DIR) && terraform output $(TF_IN_AUTOMATE) -json | jq .
+
+clean:
+	@echo "Cleaning Terraform local files..."
+	find iac/envs -type d -name ".terraform" -exec rm -rf {} +
+	find iac/envs -type f \( -name ".terraform.lock.hcl" -o -name "terraform.tfstate*" -o -name "*.tfplan" -o -name "crash.log*" \) -delete
+	@echo "Clean complete."
 
 _assert-bucket:
 	@if [ -z "$(TF_STATE_BUCKET)" ]; then \
@@ -92,4 +98,7 @@ help:
 	@echo ""
 	@echo "Convenience (do it all):"
 	@echo "  make tf-up ENV=dev   # plan + apply"
+	@echo ""
+	@echo "Other:"
+	@echo "  make clean           # clean local Terraform files (does not touch remote state)"
 	@echo ""

@@ -11,7 +11,7 @@ module "vpc" {
 
   project     = "vtd-devops-khangkieu"
   environment = "dev"
-  owner       = "khang.kieu@endava.com"
+  owner       = "khangkieu1805@gmail.com"
   cost_center = "devopskit"
   compliance  = "internal"
 
