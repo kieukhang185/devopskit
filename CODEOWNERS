@@ -1,0 +1,5 @@
+# CODEOWNERS
+# Automatically request reviews from code owners when changes are made.
+
+# Global owners (default)
+*       @kieukhang185
