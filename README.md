@@ -125,6 +125,9 @@ make tf-backend-bootstrap ENV=dev   TF_STATE_BUCKET=devopskit-dev-tfstate-<uniqu
 
 # 2) Initialize Terraform in the env to point at the remote backend
 make tf-backend-init ENV=dev
+
+# 3) Encrytion EBS
+make tf-ebs-encryption ENV=dev
 ```
 
 ### Destroy Backend (safety-gated)

@@ -75,6 +75,17 @@ tf-backend-bootstrap: _assert-bucket
 
 	@echo "Backend bootstrap complete for environment '$(ENV)'. Now you can run 'make tf-backend-init ENV=$(ENV)' to initialize Terraform with the remote backend."
 
+# TODO: Check if EBS encryption is already enabled and skip if so
+# Enable default EBS encryption (per env)
+tf-ebs-encryption:
+	@echo "Enabling default EBS encryption in region '$(AWS_REGION)' for environment '$(ENV)'..."
+	@[ -d "repo/iac/envs/$(ENV)/ebs-encryption" ] || (echo "Error: IAC directory 'iac/envs/$(ENV)/ebs-encryption' does not exist"; exit 1)
+	cd iac/envs/$(ENV)/ebs-encryption
+		terraform init ${TF_IN_AUTOMATE} -upgrade
+		terraform apply ${TF_IN_AUTOMATE} \
+		-auto-approve \
+		-var="region=$(AWS_REGION)"
+
 # Destroy backend (S3 + DynamoDB)
 destroy-backend-s3: _assert-bucket _assert-confirm
 	@echo "Destroying S3 bucket '$(TF_STATE_BUCKET)' and all its contents..."
