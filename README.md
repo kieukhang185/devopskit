@@ -77,6 +77,82 @@ This provisions networking, IAM roles, EC2 (web/api/db/monitoring), ALB, and obs
 
 ---
 
+## Key Variables
+
+You can override any of these at runtime, e.g. `make tf-plan ENV=stage`.
+
+| Variable           | Default                          | Purpose |
+| ---                | ---                              | --- |
+| `ENV`              | `dev`                            | Environment selector (`dev`, `stage`, `prod`) |
+| `AWS_REGION`       | `us-east-1`                      | AWS region for Terraform operations |
+| `IAC_DIR`          | `iac/envs/$(ENV)`                | Path to the environment folder |
+| `TF_STATE_BUCKET`  | `devopskit-$(ENV)-tfstate-123abc`| Remote state bucket name (must be globally unique) |
+| `TF_LOCK_TABLE`    | `devopskit-$(ENV)-tflock`        | DynamoDB table for state locking |
+| `TF_IN_AUTOMATE`   | `-input=false -no-color`         | Non-interactive Terraform flags |
+| `TF_VAR_FLAGS`     | `-var=region=$(AWS_REGION)`      | Example TF variable wiring |
+
+## Common Tasks
+
+
+```bash
+# Format all *.tf files (quiet if already formatted)
+make tf-fmt
+
+# Validate configuration (runs fmt first)
+make tf-validate
+
+# Create and review a plan
+make tf-plan ENV=dev
+
+# Apply changes (non-interactive)
+make tf-apply ENV=dev
+
+# Convenience: plan + apply
+make tf-up ENV=dev
+
+# Show outputs as JSON
+make tf-output ENV=dev
+```
+
+## Remote Backend (S3 + DynamoDB)
+
+### Bootstrap (one-time per env)
+Creates the S3 bucket for Terraform state and DynamoDB table for state locking, then initializes the env to use the remote backend.
+
+```bash
+# 1) Create S3 (versioned) + DynamoDB lock table
+make tf-backend-bootstrap ENV=dev   TF_STATE_BUCKET=devopskit-dev-tfstate-<unique>   TF_LOCK_TABLE=devopskit-dev-tflock
+
+# 2) Initialize Terraform in the env to point at the remote backend
+make tf-backend-init ENV=dev
+```
+
+### Destroy Backend (safety-gated)
+
+> ⚠️ Only do this **after** you’ve destroyed all Terraform-managed infra in the env.
+
+```bash
+# Destroy DDB + S3 (empties versioned bucket), requires explicit confirmation
+make tf-backend-destroy ENV=dev   TF_STATE_BUCKET=devopskit-dev-tfstate-<unique>   TF_LOCK_TABLE=devopskit-dev-tflock   CONFIRM=YES
+```
+
+Granular targets are also available:
+```bash
+make destroy-backend-dynamodb ENV=dev TF_LOCK_TABLE=... CONFIRM=YES
+make destroy-backend-s3       ENV=dev TF_STATE_BUCKET=... CONFIRM=YES
+```
+
+## Destroying Infrastructure
+
+```bash
+# Normal destroy (refuses to run if remote state key is missing)
+make tf-destroy ENV=dev
+```
+
+If you wiped your `.terraform/` folder or changed the backend, re-wire first:
+
+---
+
 ## 📚 Documentation
 - [Dev Setup Guide](docs/dev-setup.md)
 - [Architecture Diagram](docs/diagrams/)
