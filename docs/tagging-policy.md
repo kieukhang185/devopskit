@@ -18,6 +18,14 @@ This ensures visibility, cost tracking, compliance, and automation.
 
 ---
 
+## Rules
+1. **Every resource** created via Terraform inherits these tags.
+2. Modules **must not** overwrite required tags; they may **add** `extra_tags`.
+3. Environments keep their own values for `Environment` + `Owner` + `CostCenter`.
+4. CI/CD runs fail if tags are missing/invalid (via Terraform validation).
+
+---
+
 ## Examples
 
 **EC2 instance in dev for api service:**

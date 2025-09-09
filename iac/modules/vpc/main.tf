@@ -1,14 +1,15 @@
 # VPC Module
+
+variable "required_tags" {
+  description = "A map of tags to assign to all resources"
+  type        = map(string)
+  default     = {}
+}
+
 locals {
-  base_tags = {
-    Name        = "${var.name_prefix}-vpc"
-    Project     = var.project
-    Environment = var.environment
-    Owner       = var.owner
-    CostCenter  = var.cost_center
-    Compliance  = var.compliance
-    Backup      = var.backup
-  }
+  all_tags = merge(var.required_tags, var.extra_tags, {
+    Name = "devopskit-${var.environment}-vpc"
+  })
 }
 
 resource "aws_vpc" "this" {
@@ -16,5 +17,11 @@ resource "aws_vpc" "this" {
   enable_dns_support   = var.enable_dns_support
   enable_dns_hostnames = var.enable_dns_hostnames
 
-  tags = merge(local.base_tags, var.extra_tags)
+  tags = locals.all_tags
+  lifecycle {
+    precondition {
+      condition     = alltrue([for k in ["Project","Environment","Owner","CostCenter","Compliance","Backup"] : contains(keys(local.all_tags), k)])
+      error_message = "Missing one or more required tags in local.all_tags."
+    }
+  }
 }

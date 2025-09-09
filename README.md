@@ -112,6 +112,9 @@ make tf-up ENV=dev
 
 # Show outputs as JSON
 make tf-output ENV=dev
+
+# Check tags required
+tf-tags
 ```
 
 ## Remote Backend (S3 + DynamoDB)

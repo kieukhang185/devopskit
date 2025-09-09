@@ -141,6 +141,11 @@ tf-destroy:
 tf-output:
 	cd $(IAC_DIR) && terraform output $(TF_IN_AUTOMATE) -json | jq .
 
+tf-tags:
+	cd $(IAC_DIR)
+	terraform init  -upgrade >/dev/null ; \
+	terraform output $(TF_IN_AUTOMATE) required_tags_preview || true
+
 clean:
 	@echo "Cleaning Terraform local files..."
 	find iac/envs -type d -name ".terraform" -exec rm -rf {} +

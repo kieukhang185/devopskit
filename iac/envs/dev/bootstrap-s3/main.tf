@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "tf_state" {
   tags = merge(
     local.common_tags,
     {
-      Name = "${var.project}-${var.environment}-tfstate"
+      Name = "devopskit-${var.environment}-tfstate"
     }
   )
 }

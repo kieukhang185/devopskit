@@ -21,7 +21,7 @@ resource "aws_dynamodb_table" "tf_lock" {
     type = "S"
   }
   tags = merge(local.common_tags, {
-    Name = "${var.project}-${var.environment}-tf-lock"
+    Name = "devopskit-${var.environment}-tf-lock"
   })
 }
 
