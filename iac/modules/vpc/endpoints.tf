@@ -1,4 +1,4 @@
-
+# VPC Endpoints for S3 and SSM
 data "aws_region" "current" {}
 
 resource "aws_security_group" "endpoints" {
