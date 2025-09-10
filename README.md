@@ -59,6 +59,8 @@ Setup remote state (S3 + DynamoDB) per environment:
 cd iac/envs/dev
 terraform init
 terraform apply -target=module.backend
+or
+make tf-backend-bootstrap
 ```
 
 ### 4. Deploy Environment
@@ -66,6 +68,8 @@ terraform apply -target=module.backend
 cd iac/envs/dev
 terraform init
 terraform apply
+or
+make tf-up # tf-plan + tf-validate + tf-fmt
 ```
 
 This provisions networking, IAM roles, EC2 (web/api/db/monitoring), ALB, and observability stack.
@@ -169,7 +173,7 @@ If you wiped your `.terraform/` folder or changed the backend, re-wire first:
 
 ## 🤝 Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md).
-CODEOWNERS enforces team review per module/service.
+[CODEOWNERS](CODEOWNERS) enforces team review per module/service.
 
 ---
 

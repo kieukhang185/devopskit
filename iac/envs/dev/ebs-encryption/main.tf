@@ -59,7 +59,7 @@ resource "aws_ebs_encryption_by_default" "this" {
 
 # Associate the KMS key with EBS default encryption
 resource "aws_ebs_default_kms_key" "this" {
-  key_arn = aws_kms_key.ebs_default.arn
+  key_arn    = aws_kms_key.ebs_default.arn
   depends_on = [aws_ebs_encryption_by_default.this]
 }
 

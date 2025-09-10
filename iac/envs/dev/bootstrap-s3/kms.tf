@@ -103,8 +103,8 @@ data "aws_iam_policy_document" "kms_s3_logs" {
     sid    = "AllowUseFromThisAccount"
     effect = "Allow"
     principals {
-        type        = "AWS"
-        identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
     }
     actions = [
       "kms:Encrypt", "kms:Decrypt", "kms:ReEncrypt*", "kms:GenerateDataKey*", "kms:DescribeKey"
@@ -113,12 +113,12 @@ data "aws_iam_policy_document" "kms_s3_logs" {
   }
 }
 
-output kms_s3_state_key_arn {
+output "kms_s3_state_key_arn" {
   value       = "aws_kms_key.s3_state.arn"
   description = "KMS key ARN for Terraform state"
 }
 
-output kms_s3_logs_key_arn {
+output "kms_s3_logs_key_arn" {
   value       = "aws_kms_key.s3_logs.arn"
   description = "KMS key ARN for S3 logs"
 }

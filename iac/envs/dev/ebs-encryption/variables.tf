@@ -5,7 +5,7 @@ variable "region" {
   description = "AWS region"
 }
 
-variable "project"  {
+variable "project" {
   type        = string
   description = "Project name"
   default     = "vtd-devops-khangkieu"

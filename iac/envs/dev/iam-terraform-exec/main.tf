@@ -64,9 +64,9 @@ data "aws_iam_policy_document" "tf_baseline" {
 
   # Basic EC2, IAM, CloudWatch Logs permissions
   statement {
-    actions   = [
+    actions = [
       "ec2:*",
-      "iam:Get*","iam:List*",
+      "iam:Get*", "iam:List*",
       "iam:PassRole",
       "logs:*"
     ]
