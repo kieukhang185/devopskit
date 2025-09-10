@@ -1,11 +1,20 @@
 
 data "aws_ami" "ubuntu" {
   most_recent = true
-  owners      = ["devopskit"] # Canonical
+  owners      = ["099720109477"] # Canonical
 
   filter {
-    name   = "name"
+    name = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
+  }
+  filter {
+    name = "root-device-type"
+    values = ["ebs"]
   }
 }
 
@@ -21,14 +30,7 @@ module "asg_web" {
   security_group_ids = [aws_security_group.sg_web.id]
   subnet_ids         = module.vpc.public_subnet_ids
 
-  user_data_base64 = base64ecode(<<-EOF
-    #!/bin/bash
-    yum -y install nginx
-    systemctl enable nginx
-    systemctl start nginx
-    echo "web $(hostname)" > /usr/share/nginx/html/index.html
-    EOF
-  )
+  user_data_base64 = filebase64("${path.module}/userdata/web/user-data.sh")
 
   desired_capacity = 2
   min_size         = 2
