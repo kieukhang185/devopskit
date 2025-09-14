@@ -10,10 +10,11 @@ module "asg_api" {
   ami_id        = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = "devopskit-key"
+
   iam_instance_profile = module.api_iam.api_instance_profile_name
-  security_group_ids = [aws_security_group.api.id]
-  subnet_ids         = module.vpc.public_subnet_ids
-  kms_key_id        = data.aws_kms_key.ebs_default.arn
+  security_group_ids   = [aws_security_group.api.id]
+  subnet_ids           = module.vpc.public_subnet_ids
+  kms_key_id           = data.aws_kms_key.ebs_default.arn
 
   user_data_base64 = filebase64("${path.module}/userdata/api/user-data.sh")
 
@@ -31,4 +32,19 @@ module "asg_api" {
     Tier = "app"
   }
   depends_on = [module.api_iam]
+}
+
+# Keep average CPU ~50% across the API group
+resource "aws_autoscaling_policy" "api_cpu_target" {
+  name                   = "api-cpu-target"
+  autoscaling_group_name = module.asg_api.auto_scaling_group_name
+  policy_type            = "TargetTrackingScaling"
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value     = 50         # aim ~50% avg CPU
+    disable_scale_in = false      # allow scale-in automatically
+  }
 }
