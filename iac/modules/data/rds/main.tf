@@ -2,7 +2,7 @@
 # Subnet group (RDS runs in private subnets)
 resource "aws_db_subnet_group" "postgres" {
   name       = "dev-postgres-subnets"
-  subnet_ids = module.vpc.private_subnet_ids
+  subnet_ids = var.subnet_ids
 
   tags = merge(local.required_tags, {
     Name    = "${var.environment}-postgres-subnets"
@@ -41,7 +41,7 @@ resource "aws_ssm_parameter" "rds_master_password" {
 resource "aws_security_group" "rds" {
   name        = "dev-rds-sg"
   description = "RDS Postgres access from web/api only"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 
   # No wide-open ingress here; rules defined below
   egress {
@@ -58,64 +58,45 @@ resource "aws_security_group" "rds" {
   })
 }
 
-resource "aws_security_group_rule" "rds_from_web" {
-  type                     = "ingress"
-  from_port                = 5432
-  to_port                  = 5432
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.web.id
-  security_group_id        = aws_security_group.rds.id
-  description              = "Postgres from web"
-}
-
-resource "aws_security_group_rule" "rds_from_api" {
-  type                     = "ingress"
-  from_port                = 5432
-  to_port                  = 5432
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.api.id
-  security_group_id        = aws_security_group.rds.id
-  description              = "Postgres from api"
-}
-
 # The RDS instance
 resource "aws_db_instance" "postgres" {
-  identifier            = "todo-dev-postgres"
+  identifier            = "todo-${var.environment}-postgres"
   engine                = "postgres"
-  engine_version        = "16.4" # adjust as needed
-  instance_class        = "db.t3.micro"
+  engine_version        = var.engine_version
+  instance_class        = var.instance_class
   allocated_storage     = 20
   max_allocated_storage = 100 # autoscaling storage
   storage_type          = "gp3"
   storage_encrypted     = true
-  kms_key_id            = data.aws_kms_key.ebs_default.arn
+  kms_key_id            = var.kms_key_id
 
-  username = "masteruser"
-  password = random_password.rds_master.result
-  db_name  = "tododb"
+  username = var.username
+  password = var.password
+  db_name  = var.db_name
 
   port                   = 5432
-  multi_az               = false # set true for HA
+  multi_az               = var.multi_az
   publicly_accessible    = false
   vpc_security_group_ids = [aws_security_group.rds.id]
   db_subnet_group_name   = aws_db_subnet_group.postgres.name
   parameter_group_name   = aws_db_parameter_group.postgres.name
 
-  backup_retention_period = 7
-  backup_window           = "19:45-20:15"
-  maintenance_window      = "Mon:20:30-Mon:21:00"
+  backup_retention_period = var.backup_retention
+  backup_window           = var.backup_window
+  maintenance_window      = var.maintenance_window
 
-  deletion_protection       = true
+  deletion_protection       = var.deletion_protection
   skip_final_snapshot       = false
-  final_snapshot_identifier = "todo-dev-postgres-final"
+  final_snapshot_identifier = "todo-${var.environment}-postgres-final"
 
   # Performance Insights (optional; helpful in prod)
-  performance_insights_enabled          = true
-  performance_insights_kms_key_id       = data.aws_kms_key.ebs_default.arn
-  performance_insights_retention_period = 7
+  performance_insights_enabled          = var.performance_insights_enabled
+  performance_insights_kms_key_id       = var.kms_key_id
+  performance_insights_retention_period = var.performance_insights_retention_period
 
   # Faster DNS TTL on failover (if multi_az=true)
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
+  apply_immediately               = false
 
   tags = merge(local.required_tags, {
     Name    = "todo-${var.environment}-postgres"
