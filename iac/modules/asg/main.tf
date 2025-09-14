@@ -7,7 +7,7 @@ locals {
       Environment = var.environment
       Owner       = var.owner
       CostCenter  = var.cost_center
-      Compliance  = var.complaince
+      Compliance  = var.compliance
       Backup      = var.backup
       Service     = var.service
     },
@@ -27,12 +27,14 @@ resource "aws_launch_template" "this" {
   }
 
   block_device_mappings {
-    device_name = "/dev/xvda"
+    device_name = "/dev/sda1"
 
     ebs {
       volume_size = var.root_volume_size_gb
       volume_type = var.root_volume_type
       delete_on_termination = true
+      encrypted = true
+      kms_key_id = var.kms_key_id  # Optional: specify a KMS key ID for encryption
     }
   }
 
@@ -40,12 +42,8 @@ resource "aws_launch_template" "this" {
     associate_public_ip_address = false
     security_groups             = var.security_group_ids
   }
-  dynamic "user_data" {
-    for_each = var.user_data_base64 == null ? [] : [1]
-    content {
-      value = var.user_data_base64
-    }
-  }
+
+  user_data = var.user_data_base64 == null ? "" : var.user_data_base64
 
   tag_specifications {
     resource_type = "instance"

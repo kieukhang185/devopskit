@@ -105,7 +105,7 @@ variable "cost_center" {
   default     = "devopskit"
 }
 
-variable "complaince" {
+variable "compliance" {
   description = "Compliance information"
   type        = string
   default     = "internal"
@@ -121,4 +121,16 @@ variable "extra_tags" {
   description = "Map of additional tags to add to resources"
   type        = map(string)
   default     = {}
+}
+
+variable "user_data_base64" {
+  description = "Base64-encoded user-data script"
+  type        = string
+  default     = null
+}
+
+variable "kms_key_id" {
+  description = "KMS Key ID for EBS volume encryption (optional)"
+  type        = string
+  default     = null
 }

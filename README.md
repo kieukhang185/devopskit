@@ -1,4 +1,4 @@
-# DevOpsKit – AWS Multi-Environment Platform with Todo App
+# AWS Multi-Environment Platform with Todo App
 
 ## 📌 Overview
 DevOpsKit is a production-like AWS DevOps project for ToDo WebApp.
@@ -88,7 +88,7 @@ You can override any of these at runtime, e.g. `make tf-plan ENV=stage`.
 | Variable           | Default                          | Purpose |
 | ---                | ---                              | --- |
 | `ENV`              | `dev`                            | Environment selector (`dev`, `stage`, `prod`) |
-| `AWS_REGION`       | `us-east-1`                      | AWS region for Terraform operations |
+| `AWS_REGION`       | `ap-south-1`                      | AWS region for Terraform operations |
 | `IAC_DIR`          | `iac/envs/$(ENV)`                | Path to the environment folder |
 | `TF_STATE_BUCKET`  | `devopskit-$(ENV)-tfstate-123abc`| Remote state bucket name (must be globally unique) |
 | `TF_LOCK_TABLE`    | `devopskit-$(ENV)-tflock`        | DynamoDB table for state locking |

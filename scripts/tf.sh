@@ -9,7 +9,7 @@ set -euo pipefail
 
 ENV="${1:-dev}"
 CMD="${2:-plan}"
-AWS_REGION="${3:-us-east-1}"
+AWS_REGION="${3:-ap-south-1}"
 
 IAC_DIR="iac/envs/${ENV}"
 

@@ -14,7 +14,7 @@ variable "owner" {
   type        = string
   default     = "kieukhang1805@gmail.com"
   validation {
-    condition     = length(trim(var.owner)) > 0 && can(regex("@", var.owner))
+    condition     = length(trimspace(var.owner)) > 0 && can(regex("@", var.owner))
     error_message = "Owner cannot be a non-empty email/alias (contains '@')."
   }
 }
@@ -24,7 +24,7 @@ variable "cost_center" {
   type        = string
   default     = "devopskit"
   validation {
-    condition     = length(trim(var.cost_center)) > 0
+    condition     = length(trimspace(var.cost_center)) > 0
     error_message = "Cost center cannot be empty."
   }
 }

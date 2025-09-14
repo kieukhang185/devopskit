@@ -1,7 +1,7 @@
 # Makefile for Devopskit Terraform IAC
 # Init variables
 ENV 		?= dev
-AWS_REGION  ?= us-east-1
+AWS_REGION  ?= ap-south-1
 IAC_DIR 	?= iac/envs/$(ENV)
 
 # Variables for boostrap backend per environment
@@ -155,7 +155,7 @@ help:
 	@echo ""
 	@echo "Makefile for Devopskit Terraform IAC"
 	@echo "----------------------"
-	@echo "Usage: make <target> [ENV=dev|stage|prod (default: dev)] [AWS_REGION=<aws-region> (default: us-east-1)]"
+	@echo "Usage: make <target> [ENV=dev|stage|prod (default: dev)] [AWS_REGION=<aws-region> (default: ap-south-1)]"
 	@echo ""
 	@echo "Targets:"
 	@echo ""

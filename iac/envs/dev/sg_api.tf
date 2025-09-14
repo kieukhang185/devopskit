@@ -14,13 +14,13 @@ resource "aws_security_group" "api" {
   }
 
   # Egress: allow API → DB SG on Postgres
-  egress {
-    description     = "Allow Postgres to DB SG"
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    security_groups = [aws_security_group.db.id] # db SG will be defined in E2-S9
-  }
+  # egress {
+  #   description     = "Allow Postgres to DB SG"
+  #   from_port       = 5432
+  #   to_port         = 5432
+  #   protocol        = "tcp"
+  #   security_groups = [aws_security_group.db.id] # db SG will be defined in E2-S9
+  # }
 
   # Optional: wide egress until db SG exists
   # egress {

@@ -1,6 +1,6 @@
 # Provider-level tasg applied to every resource
 provider "aws" {
-  region = "us-east-1"
+  region = "ap-south-1"
   default_tags {
     tags = {
       Environment = "prod"

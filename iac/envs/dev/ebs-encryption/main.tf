@@ -1,6 +1,8 @@
 # Enable default EBS encryption (account+region scope) and set a CMK as the default key.
 # aws_ebs_encryption_by_default and aws_ebs_default_kms_key apply to all new EBS volumes create in this AWS account + region
 
+data "aws_caller_identity" "current" {}
+
 # KMS CMK dedicated for EBS default encryption (dev)
 resource "aws_kms_key" "ebs_default" {
   description             = "KMS key for EBS encryption"
@@ -27,7 +29,7 @@ resource "aws_kms_alias" "ebs_default" {
 # IAM policy document for the KMS key
 data "aws_iam_policy_document" "ebs_kms" {
   statement {
-    sid    = "EnableRootAdmin"
+    sid    = "EnableRootAccountAdmin"
     effect = "Allow"
     principals {
       type        = "AWS"
@@ -39,17 +41,29 @@ data "aws_iam_policy_document" "ebs_kms" {
     resources = ["*"]
   }
 
+  # Policy for Auto Scaling service role
   statement {
-    sid    = "AllowUseFromThisAccount"
+    sid    = "AllowAutoScalingServiceLinkedRoleUseOfKey"
     effect = "Allow"
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"]
     }
     actions = [
-      "kms:Encrypt", "kms:Decrypt", "kms:GenerateDataKey", "kms:DescribeKey"
+      "kms:Decrypt",
+      "kms:GenerateDataKeyWithoutPlaintext",
+      "kms:ReEncryptFrom",
+      "kms:ReEncryptTo",
+      "kms:CreateGrant",
+      "kms:DescribeKey",
+      "kms:ListGrants"
     ]
     resources = ["*"]
+    condition {
+      test     = "Bool"
+      variable = "kms:GrantIsForAWSResource"
+      values   = ["true"]
+  }
   }
 }
 
