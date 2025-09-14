@@ -49,9 +49,19 @@ variable "backup" {
   }
 }
 
+variable "project" {
+  type        = string
+  default     = "vtd-devops-khangkieu"
+  description = "Project name for tagging resources"
+  validation {
+    condition     = length(trimspace(var.project)) > 0
+    error_message = "Project cannot be empty."
+  }
+}
+
 locals {
   required_tags = {
-    Project     = "vtd-devops-khangkieu"
+    Project     = var.project
     Environment = var.environment
     Owner       = var.owner
     CostCenter  = var.cost_center

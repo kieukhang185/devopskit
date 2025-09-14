@@ -31,7 +31,7 @@ resource "aws_security_group" "api" {
   # }
 
   tags = merge(local.required_tags, {
-    Name    = "dev-api-sg"
+    Name    = "${var.environment}-api-sg"
     Service = "api"
     Tier    = "app"
   })

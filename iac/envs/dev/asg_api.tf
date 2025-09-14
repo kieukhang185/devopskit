@@ -1,5 +1,6 @@
+# RDS Postgres instance for dev environment
 data "aws_kms_key" "ebs_default" {
-  key_id = "alias/dev-ebs-default"
+  key_id = "alias/${var.environment}-ebs-default"
 }
 
 module "asg_api" {

@@ -29,7 +29,7 @@ resource "aws_security_group" "web" {
   }
 
   tags = merge(local.required_tags, {
-    Name    = "dev-web-sg"
+    Name    = "${var.environment}-web-sg"
     Service = "web"
     Tier    = "app"
   })

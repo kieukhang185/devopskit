@@ -26,12 +26,10 @@ resource "aws_lb_target_group" "web" {
     cookie_duration = 300 # 5 minutes
   }
 
-  tags = {
-    Name        = "todo-dev-web-tg"
-    Project     = "vtd-devops-khangkieu"
-    Environment = "dev"
-    Service     = "web"
-  }
+  tags = merge(local.required_tags, {
+    Name    = "todo-dev-web-tg"
+    Service = "web"
+  })
 }
 
 # api target group
@@ -57,12 +55,10 @@ resource "aws_lb_target_group" "api" {
     type            = "lb_cookie"
     cookie_duration = 300 # 5 minutes
   }
-  tags = {
-    Name        = "todo-dev-api-tg"
-    Project     = "vtd-devops-khangkieu"
-    Environment = "dev"
-    Service     = "api"
-  }
+  tags = merge(local.required_tags, {
+    Name    = "todo-dev-api-tg"
+    Service = "api"
+  })
 }
 
 output "web_target_group_arn" {
