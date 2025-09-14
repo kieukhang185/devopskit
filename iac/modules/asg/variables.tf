@@ -134,3 +134,9 @@ variable "kms_key_id" {
   type        = string
   default     = null
 }
+
+variable "target_group_arns" {
+  type        = list(string)
+  default     = []
+  description = "List of target group ARNs to attach to the ASG"
+}

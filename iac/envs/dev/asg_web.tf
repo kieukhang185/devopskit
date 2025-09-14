@@ -8,6 +8,7 @@ module "asg_web" {
   instance_type = "t2.micro"
   key_name      = "devopskit-key"
 
+  target_group_arns    = [aws_lb_target_group.web.arn]
   iam_instance_profile = module.web_iam.web_instance_profile_name
   security_group_ids   = [aws_security_group.web.id]
   subnet_ids           = module.vpc.public_subnet_ids

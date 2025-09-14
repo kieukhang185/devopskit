@@ -61,6 +61,7 @@ resource "aws_autoscaling_group" "this" {
   max_size            = var.max_size
   health_check_type   = "EC2"
   force_delete        = true
+  target_group_arns   = var.target_group_arns
 
   launch_template {
     id      = aws_launch_template.this.id

@@ -11,6 +11,7 @@ module "asg_api" {
   instance_type = "t2.micro"
   key_name      = "devopskit-key"
 
+  target_group_arns    = [aws_lb_target_group.api.arn]
   iam_instance_profile = module.api_iam.api_instance_profile_name
   security_group_ids   = [aws_security_group.api.id]
   subnet_ids           = module.vpc.public_subnet_ids
