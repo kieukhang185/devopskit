@@ -18,9 +18,11 @@ module "asg_api" {
   subnet_ids           = module.vpc.public_subnet_ids
   kms_key_id           = data.aws_kms_key.ebs_default.arn
 
+  associate_public_ip_address = false
+
   user_data_base64 = filebase64("${path.module}/userdata/api/user-data.sh")
 
-  desired_capacity = 2
+  desired_capacity = 1
   min_size         = 1
   max_size         = 2
 

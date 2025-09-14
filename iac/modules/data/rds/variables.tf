@@ -11,7 +11,7 @@ variable "environment" {
 
 variable "engine_version" {
   type        = string
-  default     = "14.11"
+  default     = "16"
   description = "PostgreSQL engine version"
 }
 variable "instance_class" {

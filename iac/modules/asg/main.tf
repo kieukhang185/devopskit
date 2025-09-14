@@ -39,7 +39,7 @@ resource "aws_launch_template" "this" {
   }
 
   network_interfaces {
-    associate_public_ip_address = false
+    associate_public_ip_address = var.associate_public_ip_address
     security_groups             = var.security_group_ids
   }
 

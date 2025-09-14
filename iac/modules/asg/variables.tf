@@ -51,19 +51,19 @@ variable "iam_instance_profile" {
 variable "min_size" {
   description = "Minimum number of instances in the Auto Scaling Group"
   type        = number
-  default     = 2
+  default     = 1
 }
 
 variable "max_size" {
   description = "Maximum number of instances in the Auto Scaling Group"
   type        = number
-  default     = 4
+  default     = 2
 }
 
 variable "desired_capacity" {
   description = "Desired capacity for the Auto Scaling Group"
   type        = number
-  default     = 2
+  default     = 1
 }
 
 # Volume size for the root EBS volume in GB
@@ -139,4 +139,10 @@ variable "target_group_arns" {
   type        = list(string)
   default     = []
   description = "List of target group ARNs to attach to the ASG"
+}
+
+variable "associate_public_ip_address" {
+  description = "Whether to associate a public IP address with the instances"
+  type        = bool
+  default     = false
 }

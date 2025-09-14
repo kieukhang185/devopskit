@@ -48,3 +48,12 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# tar file
+*.tar
+*.tar.gz
+*.tgz
+# zip file
+*.zip
+*.rar
+*.7z

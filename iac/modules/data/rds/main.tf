@@ -12,7 +12,7 @@ resource "aws_db_subnet_group" "this" {
 
 # Optional: custom parameter group (example forces SSL)
 resource "aws_db_parameter_group" "this" {
-  name        = "${var.name}-postgres16"
+  name        = "${var.name}-test-postgres16"
   family      = "postgres16" # match engine version below
   description = "Custom parameter group for ${var.name} with enforced SSL"
 
@@ -30,7 +30,7 @@ resource "aws_db_parameter_group" "this" {
 
   parameter {
     name         = "shared_buffers"
-    value        = "256MB"
+    value        = "32768"
     apply_method = "pending-reboot"
   }
 
@@ -47,7 +47,7 @@ resource "aws_db_parameter_group" "this" {
 
 resource "aws_db_parameter_group" "merged" {
   count       = length(var.parameter_overrides) > 0 ? 1 : 0
-  name        = "${var.name}-postgres16"
+  name        = "${var.name}-merged-postgres16"
   family      = "postgres16"
   description = "Custom parameter group for ${var.name} with overrides"
 
@@ -56,7 +56,7 @@ resource "aws_db_parameter_group" "merged" {
       {
         "rds.force_ssl"            = "1",
         log_min_duration_statement = "1000",
-        shared_buffers             = "256MB",
+        shared_buffers             = "32768", # 256MB
         max_connections            = "200"
       },
       var.parameter_overrides

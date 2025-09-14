@@ -14,7 +14,7 @@ module "rds" {
 
   # Sane defaults; bump in prod
   instance_class        = "db.t3.small"
-  engine_version        = "14.11"
+  engine_version        = "16"
   allocated_storage     = 20
   max_allocated_storage = 200
   multi_az              = true
