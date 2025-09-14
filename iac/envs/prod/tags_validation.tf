@@ -13,40 +13,40 @@ variable "owner" {
   description = "The owner of the resources"
   type        = string
   default     = "kieukhang1805@gmail.com"
-    validation {
-        condition     = length(trim(var.owner)) > 0 && can(regex("@", var.owner))
-        error_message = "Owner cannot be a non-empty email/alias (contains '@')."
-    }
+  validation {
+    condition     = length(trim(var.owner)) > 0 && can(regex("@", var.owner))
+    error_message = "Owner cannot be a non-empty email/alias (contains '@')."
+  }
 }
 
 variable "cost_center" {
   description = "The cost center for billing purposes"
   type        = string
   default     = "devopskit"
-    validation {
-        condition     = length(trim(var.cost_center)) > 0
-        error_message = "Cost center cannot be empty."
-    }
+  validation {
+    condition     = length(trim(var.cost_center)) > 0
+    error_message = "Cost center cannot be empty."
+  }
 }
 
 variable "compliance" {
   description = "Compliance level of the resources"
   type        = string
   default     = "internal"
-    validation {
-        condition     = contains(["internal","public"], var.compliance)
-        error_message = "Compliance must be one of 'internal' or 'public'."
-    }
+  validation {
+    condition     = contains(["internal", "public"], var.compliance)
+    error_message = "Compliance must be one of 'internal' or 'public'."
+  }
 }
 
 variable "backup" {
   description = "Indicates if the resource should be backed up"
   type        = string
   default     = "true"
-    validation {
-        condition     = contains(["true","false"], lower(var.backup))
-        error_message = "Backup must be either 'true' or 'false'."
-    }
+  validation {
+    condition     = contains(["true", "false"], lower(var.backup))
+    error_message = "Backup must be either 'true' or 'false'."
+  }
 }
 
 locals {

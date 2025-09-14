@@ -24,14 +24,14 @@ variable "enable_dns_hostnames" {
 
 # Required tagging fields (per standards)
 variable "project" {
-    description = "Project tag"
-    default     = "vtd-devops-khangkieu"
-    type = string
+  description = "Project tag"
+  default     = "vtd-devops-khangkieu"
+  type        = string
 }
 
-variable "environment"  {
-    description = "Environment tag"
-    type = string
+variable "environment" {
+  description = "Environment tag"
+  type        = string
 }
 
 variable "aws_region" {
@@ -41,21 +41,21 @@ variable "aws_region" {
 }
 
 variable "owner" {
-    description = "Owner tag"
-    default = "kieukhang1805@gmail.com"
-    type = string
+  description = "Owner tag"
+  default     = "kieukhang1805@gmail.com"
+  type        = string
 }
 
-variable "cost_center"  {
-    description = "CostCenter tag"
-    default     = "devopskit"
-    type        = string
+variable "cost_center" {
+  description = "CostCenter tag"
+  default     = "devopskit"
+  type        = string
 }
 
-variable "compliance"   {
-    description = "Compliance tag"
-    default     = "internal"
-    type        = string
+variable "compliance" {
+  description = "Compliance tag"
+  default     = "internal"
+  type        = string
 }
 
 variable "backup" {

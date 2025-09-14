@@ -1,6 +1,6 @@
 # Terraform configuration for Auto Scaling Group (ASG) module
 locals {
-  base_tags  = merge(
+  base_tags = merge(
     {
       Name        = var.name_prefix
       Project     = var.project
@@ -30,11 +30,11 @@ resource "aws_launch_template" "this" {
     device_name = "/dev/sda1"
 
     ebs {
-      volume_size = var.root_volume_size_gb
-      volume_type = var.root_volume_type
+      volume_size           = var.root_volume_size_gb
+      volume_type           = var.root_volume_type
       delete_on_termination = true
-      encrypted = true
-      kms_key_id = var.kms_key_id  # Optional: specify a KMS key ID for encryption
+      encrypted             = true
+      kms_key_id            = var.kms_key_id # Optional: specify a KMS key ID for encryption
     }
   }
 
@@ -54,13 +54,13 @@ resource "aws_launch_template" "this" {
 
 # Auto Scaling Group
 resource "aws_autoscaling_group" "this" {
-  name          = "${var.name_prefix}-asg"
+  name                = "${var.name_prefix}-asg"
   vpc_zone_identifier = var.subnet_ids
-  desired_capacity     = var.desired_capacity
-  min_size             = var.min_size
-  max_size             = var.max_size
-  health_check_type  = "EC2"
-  force_delete       = true
+  desired_capacity    = var.desired_capacity
+  min_size            = var.min_size
+  max_size            = var.max_size
+  health_check_type   = "EC2"
+  force_delete        = true
 
   launch_template {
     id      = aws_launch_template.this.id

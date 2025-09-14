@@ -42,7 +42,7 @@ resource "aws_autoscaling_policy" "api_scale_out" {
   autoscaling_group_name = module.asg_api.auto_scaling_group_name
   policy_type            = "SimpleScaling"
   adjustment_type        = "ChangeInCapacity"
-  scaling_adjustment     = 1        # add 1 instance
+  scaling_adjustment     = 1 # add 1 instance
   cooldown               = 120
 }
 
@@ -51,6 +51,6 @@ resource "aws_autoscaling_policy" "api_scale_in" {
   autoscaling_group_name = module.asg_api.auto_scaling_group_name
   policy_type            = "SimpleScaling"
   adjustment_type        = "ChangeInCapacity"
-  scaling_adjustment     = -1       # remove 1 instance
+  scaling_adjustment     = -1 # remove 1 instance
   cooldown               = 180
 }

@@ -44,7 +44,7 @@ resource "aws_autoscaling_policy" "api_cpu_target" {
     predefined_metric_specification {
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
-    target_value     = 50         # aim ~50% avg CPU
-    disable_scale_in = false      # allow scale-in automatically
+    target_value     = 50    # aim ~50% avg CPU
+    disable_scale_in = false # allow scale-in automatically
   }
 }

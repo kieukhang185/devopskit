@@ -8,7 +8,7 @@ variable "required_tags" {
 
 locals {
   all_tags = merge(var.required_tags, var.extra_tags, {
-    Name = "devopskit-${var.environment}-vpc"
+    Name        = "devopskit-${var.environment}-vpc"
     Project     = var.project
     Environment = var.environment
     Owner       = var.owner
@@ -26,7 +26,7 @@ resource "aws_vpc" "this" {
   tags = local.all_tags
   lifecycle {
     precondition {
-      condition     = alltrue([for k in ["Project","Environment","Owner","CostCenter","Compliance","Backup"] : contains(keys(local.all_tags), k)])
+      condition     = alltrue([for k in ["Project", "Environment", "Owner", "CostCenter", "Compliance", "Backup"] : contains(keys(local.all_tags), k)])
       error_message = "Missing one or more required tags in local.all_tags."
     }
   }

@@ -51,11 +51,11 @@ resource "aws_vpc_endpoint" "s3" {
 
 # Required for SSM: ssm, ssmmessages, ec2messages
 locals {
-    ssm_services = toset(["ssm", "ssmmessages", "ec2messages"])
-    # Place endpoints in both private and data subnets
-    vpce_subnet_ids = concat(
-        [for k, s in aws_subnet.private : s.id]
-    )
+  ssm_services = toset(["ssm", "ssmmessages", "ec2messages"])
+  # Place endpoints in both private and data subnets
+  vpce_subnet_ids = concat(
+    [for k, s in aws_subnet.private : s.id]
+  )
 }
 
 resource "aws_vpc_endpoint" "ssm" {

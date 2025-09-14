@@ -1,20 +1,20 @@
 # DynamoDB table for Terraform state locking
 locals {
-    common_tags = {
-        Environment = var.environment
-        Project     = var.project
-        Owner       = var.owner
-        CostCenter  = var.cost_center
-        Compliance  = var.compliance
-        Backup      = "true"
-        Service     = "dynamodb"
-    }
+  common_tags = {
+    Environment = var.environment
+    Project     = var.project
+    Owner       = var.owner
+    CostCenter  = var.cost_center
+    Compliance  = var.compliance
+    Backup      = "true"
+    Service     = "dynamodb"
+  }
 }
 
 resource "aws_dynamodb_table" "tf_lock" {
-  name           = var.table_name
-  billing_mode   = "PAY_PER_REQUEST"
-  hash_key       = "LockID"
+  name         = var.table_name
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
 
   attribute {
     name = "LockID"
@@ -25,7 +25,7 @@ resource "aws_dynamodb_table" "tf_lock" {
   })
 }
 
-output lock_table_name {
+output "lock_table_name" {
   value       = aws_dynamodb_table.tf_lock.name
   description = "Name of the DynamoDB table for Terraform state locking"
 }

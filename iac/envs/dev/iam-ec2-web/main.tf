@@ -13,9 +13,9 @@ resource "aws_iam_role" "web" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
-      Effect = "Allow",
+      Effect    = "Allow",
       Principal = { Service = "ec2.amazonaws.com" },
-      Action   = "sts:AssumeRole"
+      Action    = "sts:AssumeRole"
     }]
   })
 }
@@ -39,9 +39,9 @@ resource "aws_iam_policy" "web_kms_ebs" {
     Version = "2012-10-17",
     Statement = [
       {
-        Sid: "UseEBSDefaultCMK",
-        Effect: "Allow",
-        Action: [
+        Sid : "UseEBSDefaultCMK",
+        Effect : "Allow",
+        Action : [
           "kms:Encrypt",
           "kms:Decrypt",
           "kms:ReEncrypt*",
@@ -49,9 +49,9 @@ resource "aws_iam_policy" "web_kms_ebs" {
           "kms:DescribeKey",
           "kms:CreateGrant"
         ],
-        Resource: data.aws_kms_key.ebs_default.arn,
-        Condition: {
-          "Bool": { "kms:GrantIsForAWSResource": "true" }
+        Resource : data.aws_kms_key.ebs_default.arn,
+        Condition : {
+          "Bool" : { "kms:GrantIsForAWSResource" : "true" }
         }
       }
     ]

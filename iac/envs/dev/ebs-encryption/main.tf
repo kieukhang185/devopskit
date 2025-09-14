@@ -63,7 +63,7 @@ data "aws_iam_policy_document" "ebs_kms" {
       test     = "Bool"
       variable = "kms:GrantIsForAWSResource"
       values   = ["true"]
-  }
+    }
   }
 }
 
