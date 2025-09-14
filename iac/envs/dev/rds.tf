@@ -1,15 +1,16 @@
 module "rds" {
   source = "../../modules/data/rds"
   name   = "dev-app"
-  vpc_id = module.vpc.id
+  vpc_id = module.vpc.vpc_id
 
   subnet_ids = [
     module.vpc.data_subnet_ids[0],
     module.vpc.data_subnet_ids[1],
   ]
 
-  api_sg_id  = module.asg_api.security_group_id
-  kms_key_id = data.aws_kms_key.data_at_rest.arn
+  api_sg_id   = aws_security_group.api.id
+  environment = var.environment
+  kms_key_id  = data.aws_kms_key.ebs_default.arn
 
   # Sane defaults; bump in prod
   instance_class        = "db.t3.small"
@@ -21,6 +22,11 @@ module "rds" {
   backup_retention      = 7
   backup_window         = "18:00-19:00" # UTC (01:00-02:00 Asia/Ho_Chi_Minh +7)
   maintenance_window    = "Sun:19:00-Sun:20:00"
+
+  parameter_overrides = {
+    log_min_duration_statement = "900"
+    max_connections            = "150"
+  }
 
   tags = merge(local.required_tags, {
     Service = "db"

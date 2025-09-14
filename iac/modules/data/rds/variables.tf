@@ -4,6 +4,11 @@ variable "name" {
   description = "The name of the RDS instance, used as a prefix for resources"
 }
 
+variable "environment" {
+  type        = string
+  description = "The environment (e.g., dev, prod)"
+}
+
 variable "engine_version" {
   type        = string
   default     = "14.11"
@@ -82,17 +87,21 @@ variable "db_name" {
   default = "tododb"
 }
 
-variable "username" {
+variable "master_username" {
   type        = string
   default     = "devopskituser"
   description = "Master username for the RDS instance"
 }
+variable "parameter_overrides" {
+  description = "Extra DB parameters to merge into the parameter group"
+  type        = map(string)
+  default     = {}
+}
 
-variable "password" {
-  type        = string
-  sensitive   = true
-  default     = "Devopskit@123"
-  description = "Master password for the RDS instance"
+# allow attaching a custom parameter group name from outside if desired
+variable "parameter_group_name" {
+  type    = string
+  default = null
 }
 
 variable "performance_insights_enabled" {
