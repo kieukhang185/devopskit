@@ -1,7 +1,3 @@
-output "security_group_id" {
-  value       = aws_security_group.rds.id
-  description = "The ID of the RDS security group"
-}
 output "db_instance_id" {
   value       = aws_db_instance.this.id
   description = "The ID of the RDS instance"

@@ -12,9 +12,9 @@ output "http_listener_arn" {
   )
 }
 
-output "https_listener_arn" {
-  value = coalesce(
-    try(aws_lb_listener.https_forward[0].arn, null),
-    try(aws_lb_listener.https_fixed[0].arn, null)
-  )
-}
+# output "https_listener_arn" {
+#   value = coalesce(
+#     try(aws_lb_listener.https_forward[0].arn, null),
+#     try(aws_lb_listener.https_fixed[0].arn, null)
+#   )
+# }

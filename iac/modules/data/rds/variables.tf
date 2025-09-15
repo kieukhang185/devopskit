@@ -30,9 +30,9 @@ variable "vpc_id" {
   description = "VPC ID where RDS will be deployed"
 }
 
-variable "api_sg_id" {
+variable "db_sg_id" {
   type        = string
-  description = "Security Group ID of API tier allowed to reach DB"
+  description = "Security Group ID for the RDS instance"
 }
 
 variable "kms_key_id" {

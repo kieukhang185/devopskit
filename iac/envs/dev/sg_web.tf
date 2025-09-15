@@ -4,28 +4,22 @@ resource "aws_security_group" "web" {
   description = "Allow traffic from ALB to web instances, allow egress"
   vpc_id      = module.vpc.vpc_id
 
-  # Ingress: ALB → web (HTTP). Later you can add HTTPS if needed.
-  #   ingress {
-  #     description      = "Allow HTTP from ALB SG"
-  #     from_port        = 80
-  #     to_port          = 80
-  #     protocol         = "tcp"
-  #     security_groups  = [aws_security_group.alb.id]   # ALB SG defined later in E2-S6
-  #   }
+  # Ingress: ALB → web (HTTP)
   ingress {
-    description = "TEMP: allow HTTP from anywhere until ALB exists"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    description     = "Allow HTTP from ALB SG"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
   }
 
-  # Egress: allow all outbound (instances reach out for updates, logs, etc.)
+  # Egress: allow all outbound (to internet, API SG, etc.)
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   tags = merge(local.required_tags, {

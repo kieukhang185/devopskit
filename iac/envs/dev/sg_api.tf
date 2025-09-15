@@ -6,11 +6,14 @@ resource "aws_security_group" "api" {
 
   # Ingress: from web SG only (e.g., port 8080)
   ingress {
-    description     = "Allow HTTP from web SG"
-    from_port       = 8080
-    to_port         = 8080
-    protocol        = "tcp"
-    security_groups = [aws_security_group.web.id]
+    description = "Allow HTTP from web SG"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    security_groups = [
+      aws_security_group.alb.id,
+      aws_security_group.web.id
+    ]
   }
 
   # Egress: allow API → DB SG on Postgres
@@ -22,13 +25,14 @@ resource "aws_security_group" "api" {
   #   security_groups = [aws_security_group.db.id] # db SG will be defined in E2-S9
   # }
 
-  # Optional: wide egress until db SG exists
-  # egress {
-  #   from_port   = 0
-  #   to_port     = 0
-  #   protocol    = "-1"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
+  # Egress: allow all (for DB, updates, etc.)
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 
   tags = merge(local.required_tags, {
     Name    = "${var.environment}-api-sg"

@@ -85,27 +85,6 @@ resource "aws_ssm_parameter" "rds_master_password" {
   value       = random_password.rds_master.result
 }
 
-# Security group for RDS (ingress only from web/api SGs)
-resource "aws_security_group" "rds" {
-  name        = "dev-rds-sg"
-  description = "RDS Postgres access from web/api only"
-  vpc_id      = var.vpc_id
-
-  # No wide-open ingress here; rules defined below
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = merge(var.tags, {
-    Name    = "${var.environment}-rds-sg"
-    Service = "db"
-  })
-}
-
 # Choose which PG name to use
 locals {
   effective_parameter_group = coalesce(
@@ -134,7 +113,7 @@ resource "aws_db_instance" "this" {
   port                   = 5432
   multi_az               = var.multi_az
   publicly_accessible    = false
-  vpc_security_group_ids = [aws_security_group.rds.id]
+  vpc_security_group_ids = [var.db_sg_id]
   db_subnet_group_name   = aws_db_subnet_group.this.name
   parameter_group_name   = local.effective_parameter_group
 
@@ -165,7 +144,6 @@ resource "aws_db_instance" "this" {
 
   depends_on = [
     aws_db_subnet_group.this,
-    aws_security_group.rds
   ]
 }
 
@@ -173,5 +151,4 @@ output "rds_endpoint" { value = aws_db_instance.this.address }
 output "rds_port" { value = aws_db_instance.this.port }
 output "rds_db_name" { value = aws_db_instance.this.db_name }
 output "rds_master_user" { value = aws_db_instance.this.username }
-output "rds_sg_id" { value = aws_security_group.rds.id }
 output "rds_master_pw_ssm" { value = aws_ssm_parameter.rds_master_password.name }
