@@ -2,7 +2,11 @@
 locals {
   # Enforce minimal tagging policy (extend as needed)
   base_tags = {
-    Service = "ci"
+    Service    = "ci"
+    Owner      = "khangkieu"
+    CostCenter = "vtd-devops-khangkieu"
+    Compliance = "internal"
+    Project    = "devopskit"
   }
 
   tags = merge(local.base_tags, var.tags)
